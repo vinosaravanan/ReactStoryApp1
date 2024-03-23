@@ -1,5 +1,6 @@
 const StoryModel = require("../Model/StoryModel");
 const User = require("../Model/UserModel");
+const mongoose = require('mongoose') 
 
 const getStory = async (req, res) => {
     let blogs;
@@ -50,7 +51,30 @@ const CreateStory = async (req, res) => {
     return res.status(200).json({story})
 }
 
+const UpdateStory = async (req, res) => {
+    
+    const{title, description} = req.body;
+    const storyId = req.params.id;
+    console.log(storyId);
+    let story;
+    try {
+        story = await StoryModel.findByIdAndUpdate(storyId, {
+            title,
+            description
+        })
+    } catch (error) {
+        console.log(error);
+    }
+    if(!story){
+        return res.status(500).json({message:"unable to the blog"})
+    }
+   return res.status(200).json({story})
+
+}
+
+
 module.exports = {
     getStory,
-    CreateStory
+    CreateStory,
+    UpdateStory
 }
