@@ -9,7 +9,7 @@ const UserRouter = require('./Route/UserRouter');
 const StoryRouter = require('./Route/StoryRouter');
 
 
-// db connection ////////////////// from github
+// db connection 
 dbConnection();
 
 // middleware
@@ -19,6 +19,7 @@ app.use(morgan('dev'))
 // router middleware
 app.use('/api/auth/', UserRouter)
 app.use('/api/story/', StoryRouter)
+
 
 const port = process.env.PORT || 8080
 app.listen(port, ()=> console.log(`server is running on port ${port}`.bgCyan.white))
