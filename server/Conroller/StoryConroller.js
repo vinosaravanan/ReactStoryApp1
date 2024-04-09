@@ -72,9 +72,56 @@ const UpdateStory = async (req, res) => {
 
 }
 
+const getStoryById = async (req, res) => {
+    const id = req.params.id;
+    let story;
+    try {
+        story = await StoryModel.findById(id)
+    } catch (error) {
+        console.log(error);
+    }
+    if(!story){
+        return res.status(404).json({message:"No Blog Found"})
+    }
+    return res.status(200).json({story})
+}
+
+const deleteStory = async (req, res) => {
+    const id = req.params.id;
+    let story;
+    try {
+        story = await StoryModel.findByIdAndDelete(id).populate("user");
+        await blog.user.blogs.pull(blog);
+        await blog.user.save()
+    } catch (error) {
+        console.log(error);
+    }
+    if(!story){
+        return res.status(404).json({Message: "Unable to Delete"})
+    }
+    return res.status(200).json({message: "succssFully delete"})
+}
+
+const getUsersAllStory = async (req, res) => {
+    const userId = req.params.id;
+    let userStory;
+    try {
+       userStory = await User.findById(userId).populate("blogs")
+
+    } catch (error) {
+        console.log(error);
+    }
+    if(!userStory){
+        return res.status(404).json({message:"No Blog Fount"})
+    }
+    return res.status(200).json({user:userStory})
+}
 
 module.exports = {
     getStory,
     CreateStory,
-    UpdateStory
+    UpdateStory,
+    getStoryById,
+    deleteStory,
+    getUsersAllStory
 }
